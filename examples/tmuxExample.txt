@@ -1,0 +1,30 @@
+#-----------tmux Cheat Sheet-----------#
+
+Session Management
+	Start a new named session
+		tmux new -s mysession
+	List sessions
+		tmux ls
+	Attach to a session
+		tmux attach -t mysession
+	Kill a session
+		tmux kill-session -t mysession
+
+Window Management
+	Create new window
+		ctrl+b c
+	Rename window
+		ctrl+b ,
+	Next/previous window
+		ctrl+b n		next
+		ctrl+b p		previous
+
+Pane Management
+	Split vertically
+		ctrl+b %
+	Split horizontally
+		ctrl+b "
+	Navigate panes
+		ctrl+b arrow-key
+	Close pane
+		exit

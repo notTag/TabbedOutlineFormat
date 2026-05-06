@@ -1,0 +1,34 @@
+#-----------Docker Cheat Sheet-----------#
+
+Check Docker Version:
+	docker --version
+
+Basic Docker Commands
+	Images
+		List Images:
+			docker images
+		Pull an Image from Docker Hub:
+			docker pull <image-name>
+		Remove an Image:
+			docker rmi <image-name>
+	Containers
+		List Running Containers:
+			docker ps
+		List All Containers (including stopped):
+			docker ps -a
+		Run a Container:
+			docker run <image-name>
+		Stop a Container:
+			docker stop <container-name>
+		Remove a Container:
+			docker rm <container-name>
+
+Build & Push
+	Build from Dockerfile:
+		docker build -t <tag-name> .
+			-t
+				assigns a tag/name to the image.
+			.
+				path to Dockerfile (current directory).
+	Push to Registry:
+		docker push <username>/<image-name>

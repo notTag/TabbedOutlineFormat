@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabbed Outline Format (TOF) — Specification</title>
+<meta name="description" content="A plain-text, tab-indented note-taking format. Hierarchy through real tab characters. Zero formatting overhead.">
+<link rel="canonical" href="https://tabbedoutlineformat.com/">
+<style>
+  :root {
+    --paper: #f4efe6;
+    --ink: #1a1a1a;
+    --faded: #6b6660;
+    --rule: #c9c2b3;
+    --accent: #8a3a2e;
+    --code-bg: #ebe5d6;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Courier New", "Courier Prime", "IBM Plex Mono", Courier, monospace;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  body {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.5px;
+  }
+
+  h1 .acronym {
+    color: var(--accent);
+  }
+
+  .meta {
+    color: var(--faded);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .meta strong {
+    color: var(--ink);
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin: 3rem 0 1rem;
+    border-bottom: 1px dashed var(--rule);
+    padding-bottom: 0.4rem;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    margin: 2rem 0 0.6rem;
+    color: var(--accent);
+  }
+
+  p, li { font-size: 1rem; }
+
+  ul, ol { padding-left: 1.5rem; }
+
+  li { margin-bottom: 0.4rem; }
+
+  code {
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-size: 0.92em;
+  }
+
+  pre {
+    background: var(--code-bg);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.2rem;
+    overflow-x: auto;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    tab-size: 4;
+    -moz-tab-size: 4;
+  }
+
+  pre code {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    margin: 2.5rem 0;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+  }
+
+  a:hover { background: var(--code-bg); }
+
+  .checklist {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .checklist li {
+    padding-left: 1.8rem;
+    position: relative;
+  }
+
+  .checklist li::before {
+    content: "[ ]";
+    position: absolute;
+    left: 0;
+    color: var(--faded);
+  }
+
+  footer {
+    margin-top: 5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    color: var(--faded);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--accent);
+    color: var(--paper);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Tabbed Outline Format <span class="acronym">(TOF)</span><span class="badge">Alpha</span></h1>
+  <div class="meta">
+    <strong>Version:</strong> 0.1.0-alpha &nbsp;·&nbsp;
+    <strong>Status:</strong> Pre-beta, breaking changes possible<br>
+    <strong>Repo:</strong> <a href="https://github.com/wakelax/TabbedOutlineFormat">github.com/wakelax/TabbedOutlineFormat</a>
+  </div>
+</header>
+
+<p>A plain-text, tab-indented note-taking format. Hierarchy lives entirely in real tab characters &mdash; no markdown, no parsers, no formatting overhead. Optimized for scannability and density.</p>
+
+<h2>Core Principle</h2>
+<p>Content is organized as a hierarchy using <strong>literal tab characters</strong> for indentation. Each tab level represents one deeper layer of detail. The format prioritizes scannability, density, and zero formatting overhead.</p>
+
+<h2>Indentation Rules</h2>
+<ul>
+  <li>Use <strong>real tab characters</strong> (not spaces) for every indentation level.</li>
+  <li>Root level (0 tabs) is reserved for top-level topics, section headers, or standalone descriptions.</li>
+  <li>Each additional tab = one deeper level of nesting. There is no hard limit on depth, but most content lives within 1&ndash;3 tab levels.</li>
+</ul>
+
+<h2>Entry Patterns</h2>
+
+<h3>Pattern 1: Description-then-Content</h3>
+<p>A plain-text description sits at one level. The command, code, or value it describes is indented one tab deeper directly below it.</p>
+<pre><code>Check Docker Version:
+	docker --version</code></pre>
+
+<h3>Pattern 2: Category Nesting</h3>
+<p>Group related entries under a shared parent label. Nest as many levels deep as needed.</p>
+<pre><code>Basic Docker Commands
+	Images
+		List Images:
+			docker images
+		Pull an Image from Docker Hub:
+			docker pull &lt;image-name&gt;
+	Containers
+		List Running Containers:
+			docker ps</code></pre>
+
+<h3>Pattern 3: Inline Key-Value</h3>
+<p>For mappings like keyboard shortcuts or flag references, place the key and its description on the same line separated by tab(s).</p>
+<pre><code>mode select
+	esc 	normal mode
+	i   	insert mode
+	a   	(append) moves the cursor one character over and switches to insert mode.</code></pre>
+
+<h3>Pattern 4: Sub-Explanations</h3>
+<p>Explain individual flags or parts of a command by nesting them below the command itself.</p>
+<pre><code>Initialize a new repo on github.
+	git init
+	git add .
+	git commit -m "initial commit"
+	gh repo create my-repo-name --private --source=. --push
+		--source=.
+			set the current directory as the directory you want to create in github.</code></pre>
+
+<h2>Section Headers</h2>
+<p>Section headers appear at root level (0 tabs). Several styles are acceptable:</p>
+<ul>
+  <li><strong>Bordered:</strong> <code>#--- Title ---#</code></li>
+  <li><strong>Underlined:</strong> Title on one line, <code>===</code> or <code>---</code> on the next</li>
+  <li><strong>ALL CAPS:</strong> <code>HOOK EVENTS</code></li>
+  <li><strong>Plain text:</strong> Just the title as a line at root level</li>
+  <li><strong>File title:</strong> The first line of the file can serve as the document title</li>
+</ul>
+<p>A blank line should appear before and/or after section headers to visually separate groups.</p>
+
+<h2>Formatting Rules</h2>
+<ol>
+  <li><strong>Plain text only.</strong> Do not use markdown syntax (<code>#</code>, <code>**</code>, backticks, bullet points) inside TOF files. The hierarchy comes entirely from tab indentation.</li>
+  <li><strong>Terse descriptions.</strong> Short, direct phrases rather than full sentences.</li>
+  <li><strong>Blank lines</strong> separate logical groups or sections.</li>
+  <li><strong>Placeholders</strong> use <code>&lt;angle-brackets&gt;</code> for variable values (e.g., <code>&lt;image-name&gt;</code>).</li>
+  <li><strong>No trailing prose.</strong> If something needs more context, nest it one level deeper.</li>
+  <li><strong>Code/commands live at leaf level.</strong> The actual command should be at the deepest indentation for its entry, with its description one level above.</li>
+</ol>
+
+<h2>File Naming</h2>
+<ul>
+  <li>Use <strong>camelCase</strong> for file names.</li>
+  <li>Suffix with <code>Cheat</code> or <code>CheatSheet</code> (e.g., <code>gitCheat.txt</code>, <code>dockerCheatSheet.txt</code>).</li>
+  <li>Use <code>.txt</code> extension. A dedicated <code>.tof</code> extension is planned for a future release.</li>
+</ul>
+
+<h2>Complete Example</h2>
+<pre><code>#-----------tmux Cheat Sheet-----------#
+
+Session Management
+	Start a new named session
+		tmux new -s mysession
+	List sessions
+		tmux ls
+	Attach to a session
+		tmux attach -t mysession
+	Kill a session
+		tmux kill-session -t mysession
+
+Window Management
+	Create new window
+		ctrl+b c
+	Rename window
+		ctrl+b ,
+	Next/previous window
+		ctrl+b n		next
+		ctrl+b p		previous
+
+Pane Management
+	Split vertically
+		ctrl+b %
+	Split horizontally
+		ctrl+b "
+	Navigate panes
+		ctrl+b arrow-key
+	Close pane
+		exit</code></pre>
+
+<h2>Summary Checklist</h2>
+<ul class="checklist">
+  <li>Uses real tab characters, not spaces</li>
+  <li>Descriptions above, content indented below</li>
+  <li>Section headers at root level with blank line separation</li>
+  <li>No markdown syntax &mdash; plain text only</li>
+  <li>Terse, scannable descriptions</li>
+  <li>Placeholders in <code>&lt;angle-brackets&gt;</code></li>
+  <li>File named in camelCase with Cheat/CheatSheet suffix and .txt extension</li>
+</ul>
+
+<footer>
+  Tabbed Outline Format &middot; v0.1.0-alpha &middot;
+  <a href="https://github.com/wakelax/TabbedOutlineFormat/blob/main/SPEC.md">SPEC.md</a> &middot;
+  <a href="https://github.com/wakelax/TabbedOutlineFormat/tree/main/examples">examples</a>
+</footer>
+
+</body>
+</html>

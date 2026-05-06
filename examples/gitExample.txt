@@ -1,0 +1,47 @@
+#-----------Git Cheat Sheet-----------#
+
+Setup
+	Configure name and email
+		git config --global user.name "<your-name>"
+		git config --global user.email "<your-email>"
+
+Repo Initialization
+	Initialize a new repo
+		git init
+	Clone a remote repo
+		git clone <repo-url>
+
+Daily Workflow
+	Check status
+		git status
+	Stage changes
+		git add <file>
+		git add .
+			stages all changes in current directory.
+	Commit staged changes
+		git commit -m "<message>"
+	Push to remote
+		git push origin <branch>
+	Pull from remote
+		git pull origin <branch>
+
+Branching
+	List branches
+		git branch
+	Create a new branch
+		git branch <branch-name>
+	Switch branches
+		git checkout <branch-name>
+	Create and switch in one step
+		git checkout -b <branch-name>
+	Merge a branch into current
+		git merge <branch-name>
+
+Inspection
+	Show commit history
+		git log
+		git log --oneline		condensed view
+	Show diff of unstaged changes
+		git diff
+	Show diff of staged changes
+		git diff --staged
